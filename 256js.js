@@ -23,7 +23,7 @@ async function interpret(code) {
   let lastVar = undefined;
 
   let lex = lexer2(lexer(code));
-  console.log(lex);
+  //console.log(lex);
 
   for (let i = 0; i < lex.length; i++) {
     let cur = lex[i];
@@ -33,6 +33,7 @@ async function interpret(code) {
 }
 
 async function runCommand(cur, i, lex, vars, lastVar) {
+  //console.log(cur, i);
   switch (cur[0]) {
     case '2':
       vars[lastVar] = getInputChar();
@@ -80,7 +81,7 @@ function getIfPos(lex, variables, indexStart, condition) {
 
   //console.log(lex.filter((x, i) => i > indexStart && x[0] === '^' && typeof x[1][0] !== 'number'));
 
-  return lex.indexOf(lex.filter((x, i) => i > indexStart && x[0] === '^' && typeof x[1][0] !== 'number')[eval(condition) === true ? 0 : 1]) - 1;
+  return lex.indexOf(lex.filter((x, i) => i > indexStart && x[0] === '^' && typeof x[1][0] !== true)[eval(condition) === true ? 0 : 1]) - 1;
 }
 
 function getLoopPos(lex, loopNum) {
@@ -171,7 +172,7 @@ async function wrapper(code) {
 
   await interpret(code);
 
-  console.log('\nInterpreted - took', `${(performance.now() - start).toFixed(2)}ms`);
+  console.log('\n\nInterpreted - took', `${(performance.now() - start).toFixed(2)}ms`);
 
   rl.close();
 }
