@@ -42,7 +42,8 @@ async function runCommand(cur, i, lex, vars, lastVar) {
       vars[lastVar] = await getInputChar();
       break;
     case '5':
-      vars[cur[1][0]] = cur[1][1];
+      let value = cur[1][1];
+      vars[cur[1][0]] = vars[value] !== undefined ? vars[value] : value;
       lastVar = cur[1][0];
       break;
 
@@ -61,7 +62,7 @@ async function runCommand(cur, i, lex, vars, lastVar) {
       break;
 
     case false:
-      process.stdout.write(vars[cur[1]] ? vars[cur[1]].toString() : cur[1].replace(/\\n/g, '\n'));
+      process.stdout.write(vars[cur[1]] !== undefined ? vars[cur[1]].toString() : file !== undefined ? cur[1].replace(/\\n/g, '\n') : cur[1]);
       break;
 
     case '++':
@@ -75,6 +76,10 @@ async function runCommand(cur, i, lex, vars, lastVar) {
   //await new Promise(res => setTimeout(res, 1));
 
   return [cur, i, lex, vars, lastVar];
+}
+
+function ifVarUse(value, variables) {
+  return variables[value] ? vars[value] : value;
 }
 
 function getIfPos(lex, variables, indexStart, condition) {
