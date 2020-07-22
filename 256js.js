@@ -2,11 +2,12 @@ const { performance } = require('perf_hooks');
 const { readFileSync } = require('fs');
 const readline = require('readline');
 
-let getInputChar = () => {
-  let l = inputBuffer.length;
-  let r = inputBuffer.charCodeAt(l);
-  inputBuffer = inputBuffer.substr(0, l - 1);
-  return r;
+let getInputChar = async () => {
+  inputBuffer = '';
+
+  while (inputBuffer.length < 1) { await new Promise(res => setTimeout(res, 1)); }
+
+  return inputBuffer[inputBuffer.length - 1];
 };
 
 let inputBuffer = '';
@@ -38,7 +39,7 @@ async function runCommand(cur, i, lex, vars, lastVar) {
   //console.log(cur, i);
   switch (cur[0]) {
     case '2':
-      vars[lastVar] = getInputChar();
+      vars[lastVar] = await getInputChar();
       break;
     case '5':
       vars[cur[1][0]] = cur[1][1];
@@ -124,12 +125,12 @@ function lexer2(lex) { // Fix ^ ifs
 }
 
 function lexer(code) { // *Seems* simple enough - each command is seperated via semi colons and first character is also the command itself (although variables / 5 is more complex)
-  return code.split(';').map((x, i) => {
+  return code.split(';').map((x) => {
     return lexCommand(x, i);
   });
 }
 
-function lexCommand(x, i) {
+function lexCommand(x) {
   let command = x[0];
 
   if (!cmds.includes(command)) {
