@@ -19,6 +19,8 @@ process.stdin.on('data', (c) => {
 });
 
 async function interpret(code) {
+  code = code.replace(/\n|\r/g, ''); // Allow new lines by just ignoring them
+
   let vars = {};
   let lastVar = undefined;
 
