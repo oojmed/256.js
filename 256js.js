@@ -61,7 +61,7 @@ async function runCommand(cur, i, lex, vars, lastVar) {
       break;
 
     case false:
-      process.stdout.write(vars[cur[1]] ? vars[cur[1]].toString() : cur[1]);
+      process.stdout.write(vars[cur[1]] ? vars[cur[1]].toString() : cur[1].replace(/\\n/g, '\n'));
       break;
 
     case '++':
@@ -126,7 +126,7 @@ function lexer2(lex) { // Fix ^ ifs
 
 function lexer(code) { // *Seems* simple enough - each command is seperated via semi colons and first character is also the command itself (although variables / 5 is more complex)
   return code.split(';').map((x) => {
-    return lexCommand(x, i);
+    return lexCommand(x);
   });
 }
 
