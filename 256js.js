@@ -103,8 +103,6 @@ let cmds = ['2', '5', '6', '^', '--', '++']
   (and <variable>++: increase <variable> by one)
 */
 
-let ops = ['>', '<', '+', '-', '*', '/', '='];
-
 function lexer2(lex) { // Fix ^ ifs
   for (let i = 0; i < lex.length; i++) {
     let cur = lex[i];
