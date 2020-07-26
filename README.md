@@ -1,4 +1,4 @@
-# bef93js
+# 256.js
 
 A 256 (see below for details on the esolang) interpreter, made in JavaScript, also featuring a wrapper for NodeJS.
 
