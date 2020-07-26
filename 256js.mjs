@@ -17,6 +17,8 @@ export async function interpret(code, {getInput, sendOutput}, id, vars = {}, las
   }
 
   if (id !== undefined) delete internalHaltChecks[id];
+
+  return {vars, lastVar};
 }
 
 export async function haltInterpret(id) {
