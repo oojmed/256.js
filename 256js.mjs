@@ -8,7 +8,7 @@ export async function interpret(code, {getInput, sendOutput}, id) {
   let vars = {};
   let lastVar = undefined;
 
-  let lex = lexer2(lexer(code));
+  let lex = lexer(code);
   //console.log(lex);
 
   for (let i = 0; i < lex.length; i++) {
@@ -105,8 +105,12 @@ let cmds = ['2', '5', '6', '^', '--', '++']
   (and <variable>++: increase <variable> by one)
 */
 
-function lexer2(lex) { // Fix ^ ifs
-  for (let i = 0; i < lex.length; i++) {
+export function lexer(code) { // *Seems* simple enough - each command is seperated via semi colons and first character is also the command itself (although variables / 5 is more complex)
+  let lex = code.split(';').map((x) => {
+    return lexCommand(x);
+  });
+
+  for (let i = 0; i < lex.length; i++) { // Fix ^ ifs stuff
     let cur = lex[i];
     if (cur[1][0] === false) {
       let conSplit = cur[1][1].split('^');
@@ -121,12 +125,6 @@ function lexer2(lex) { // Fix ^ ifs
   }
 
   return lex;
-}
-
-function lexer(code) { // *Seems* simple enough - each command is seperated via semi colons and first character is also the command itself (although variables / 5 is more complex)
-  return code.split(';').map((x) => {
-    return lexCommand(x);
-  });
 }
 
 function lexCommand(x) {
