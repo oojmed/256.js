@@ -1,12 +1,9 @@
 let internalHaltChecks = {};
 
-export async function interpret(code, {getInput, sendOutput}, id) {
+export async function interpret(code, {getInput, sendOutput}, id, vars = {}, lastVar = undefined) {
   code = code.replace(/\n|\r/g, ''); // Allow new lines by just ignoring them
 
   if (id !== undefined) internalHaltChecks[id] = false;
-
-  let vars = {};
-  let lastVar = undefined;
 
   let lex = lexer(code);
   //console.log(lex);
