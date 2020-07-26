@@ -1,5 +1,9 @@
-export async function interpret(code, {getInput, sendOutput}) {
+let internalHaltChecks = {};
+
+export async function interpret(code, {getInput, sendOutput}, id) {
   code = code.replace(/\n|\r/g, ''); // Allow new lines by just ignoring them
+
+  if (id !== undefined) internalHaltChecks[id] = false;
 
   let vars = {};
   let lastVar = undefined;
@@ -9,12 +13,23 @@ export async function interpret(code, {getInput, sendOutput}) {
 
   for (let i = 0; i < lex.length; i++) {
     let cur = lex[i];
-    //console.log(i, cur);
+
     [cur, i, lex, vars, lastVar] = await runCommand(cur, i, lex, vars, lastVar, getInput, sendOutput);
+
+    if (id !== undefined && internalHaltChecks[id] === true) break;
   }
+
+  if (id !== undefined) delete internalHaltChecks[id];
 }
 
-async function runCommand(cur, i, lex, vars, lastVar, getInput, sendOutput) {
+export async function haltInterpret(id) {
+  if (internalHaltChecks[id] === undefined) return false;
+  internalHaltChecks[id] = true;
+
+  return true;
+}
+
+export async function runCommand(cur, i, lex, vars, lastVar, getInput, sendOutput) {
   //console.log(cur, i);
   switch (cur[0]) {
     case '2':
