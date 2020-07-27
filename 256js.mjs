@@ -1,3 +1,5 @@
+export let version = 'v1.0.0';
+
 let internalHaltChecks = {};
 
 export async function interpret(code, {getInput, sendOutput}, id, vars = {}, lastVar = undefined) {
