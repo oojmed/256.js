@@ -1,4 +1,4 @@
-export let version = 'v1.0.0';
+export let version = '1.1.0';
 
 let internalHaltChecks = {};
 
@@ -10,10 +10,16 @@ export async function interpret(code, {getInput, sendOutput}, id, vars = {}, las
   let lex = lexer(code);
   //console.log(lex);
 
+  let commandNumber = 0;
+
   for (let i = 0; i < lex.length; i++) {
     let cur = lex[i];
 
     [cur, i, lex, vars, lastVar] = await runCommand(cur, i, lex, vars, lastVar, getInput, sendOutput);
+
+    if (commandNumber % 10 === 0) await new Promise(res => setTimeout(res, 0)); // Allows halting / cancelling 
+
+    commandNumber++;
 
     if (id !== undefined && internalHaltChecks[id] === true) break;
   }
@@ -67,8 +73,6 @@ export async function runCommand(cur, i, lex, vars, lastVar, getInput, sendOutpu
       vars[cur[1]]--;
       break;
   }
-
-  //await new Promise(res => setTimeout(res, 1));
 
   return [cur, i, lex, vars, lastVar];
 }
