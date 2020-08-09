@@ -35,6 +35,7 @@ async function wrapper(code) {
   await interpret(code, {getInput: getInputChar, sendOutput: (s) => process.stdout.write(s)});
 
   rl.close();
+  process.exit();
 }
 
 let file = process.argv[2];
@@ -43,9 +44,7 @@ if (file === undefined) {
   rl.question('256 code (or pass a file as an argument):\n', async function(code) {
     wrapper(code);
   });
-
-  process.exit();
+} else {
+  console.log(`${file}\n`);
+  wrapper(readFileSync(file, 'utf8'));
 }
-
-console.log(`${file}\n`);
-wrapper(readFileSync(file, 'utf8'));
