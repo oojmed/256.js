@@ -1,4 +1,4 @@
-export let version = '1.1.2';
+export let version = '1.1.3';
 
 let internalHaltChecks = {};
 
@@ -14,7 +14,7 @@ export async function interpret(code, {getInput, sendOutput}, id, vars = {}, las
   for (let i = 0; i < lex.length; i++) {
     let cur = lex[i];
 
-    [cur, i, lex, vars, lastVar] = await runCommand(cur, i, lex, vars, lastVar, getInput, sendOutput);
+    [cur, i, vars, lastVar] = await runCommand(cur, i, lex, vars, lastVar, getInput, sendOutput);
 
     if (commandNumber % 10 === 0) await new Promise(res => setTimeout(res, 0)); // Allows halting / cancelling
 
@@ -57,7 +57,7 @@ export async function runCommand(cur, i, lex, vars, lastVar, getInput, sendOutpu
         break;
       }
 
-      [cur, i, lex, vars, lastVar] = await runCommand(cur[1], i, lex, vars, lastVar, getInput, sendOutput);
+      [cur, i, vars, lastVar] = await runCommand(cur[1], i, lex, vars, lastVar, getInput, sendOutput);
 
       break;
 
@@ -73,7 +73,7 @@ export async function runCommand(cur, i, lex, vars, lastVar, getInput, sendOutpu
       break;
   }
 
-  return [cur, i, lex, vars, lastVar];
+  return [cur, i, vars, lastVar];
 }
 
 function ifVarUse(value, variables) {
