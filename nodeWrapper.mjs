@@ -2,8 +2,6 @@ import { interpret } from './256js.mjs';
 
 import { readFileSync } from 'fs';
 import * as readline from "readline";
-//const { readFileSync } = require('fs');
-//const readline = require('readline');
 
 let getInputChar = async () => {
   inputBuffer = '';
@@ -35,7 +33,6 @@ async function wrapper(code) {
   await interpret(code, {getInput: getInputChar, sendOutput: (s) => process.stdout.write(s)});
 
   rl.close();
-  process.exit();
 }
 
 let file = process.argv[2];

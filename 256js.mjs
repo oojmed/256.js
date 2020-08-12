@@ -1,4 +1,4 @@
-export let version = '1.1.1';
+export let version = '1.1.2';
 
 let internalHaltChecks = {};
 
@@ -7,8 +7,7 @@ export async function interpret(code, {getInput, sendOutput}, id, vars = {}, las
 
   if (id !== undefined) internalHaltChecks[id] = false;
 
-  let lex = lexer(code);
-  //console.log(lex);
+  const lex = lexer(code);
 
   let commandNumber = 0;
 
@@ -17,7 +16,7 @@ export async function interpret(code, {getInput, sendOutput}, id, vars = {}, las
 
     [cur, i, lex, vars, lastVar] = await runCommand(cur, i, lex, vars, lastVar, getInput, sendOutput);
 
-    if (commandNumber % 10 === 0) await new Promise(res => setTimeout(res, 0)); // Allows halting / cancelling 
+    if (commandNumber % 10 === 0) await new Promise(res => setTimeout(res, 0)); // Allows halting / cancelling
 
     commandNumber++;
 
@@ -93,7 +92,7 @@ function getLoopPos(lex, loopNum) {
   return lex.indexOf(lex.filter((x) => x[0] === '6' && x[1] === false)[loopNum - 1]);
 }
 
-let cmds = ['2', '5', '6', '^', '--', '++']
+const cmds = ['2', '5', '6', '^', '--', '++']
 
 /*
   Commands:
